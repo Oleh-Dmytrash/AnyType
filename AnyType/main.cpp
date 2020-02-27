@@ -2,27 +2,29 @@
 //
 
 #include <iostream>
-#include <typeinfo>
 #include "AnyType.h"
 
 int main()
 {
-    //std::cout << "Hello World!\n";
-    ////int a = 5;
-    //std::nullptr_t st;
-    //unsigned long long int a = 16172347921399647917;
-    //bool c = 0;
-    //std::cout << typeid(long double).name() << "     " << a;
-    AnyType anyType;
+    AnyType anyType = 0.56;
+
+    try
+    {
+        cout << anyType.GetType() << "\t :" << anyType.ToDouble() << endl;
+    }
+    catch (const std::exception & ex)
+    {
+        cout << ex.what();
+    }
 
     anyType = 5;
-    cout << anyType.GetType() << ": \t" << anyType.ToInt() << endl;
+    cout << anyType.GetType() << "\t :" << anyType.ToInt() << endl;
 
     anyType = true;
-    cout << anyType.GetType() << ": \t" << anyType.ToBool() << endl;
+    cout << anyType.GetType() << "\t :" << anyType.ToBool() << endl;
 
     anyType = 'h';
-    cout << anyType.GetType() << ": \t" << anyType.ToChar() << endl;
+    cout << anyType.GetType() << "\t :" << anyType.ToChar() << endl;
 
     try
     {
@@ -32,7 +34,6 @@ int main()
     {
         cout << ex.what();
     }
-
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

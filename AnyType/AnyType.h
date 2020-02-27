@@ -10,37 +10,80 @@ using namespace std;
 class AnyType
 {
 public:
-	AnyType();
-	~AnyType();
+	AnyType();	
+	template<typename T>
+	AnyType(T input);
+	~AnyType();	
+	
+	template<typename T>
+	AnyType& operator=(T input);
+
 	AnyType& operator=(const AnyType& anyType);
-	AnyType& operator=(const bool& boolean);
-	AnyType& operator=(const int& integer);
-	AnyType& operator=(const unsigned int& u_integer);
-	AnyType& operator=(const long int& l_integer);
-	AnyType& operator=(const unsigned long int& u_l_integer);
-	AnyType& operator=(const long long int& l_l_integer);
-	AnyType& operator=(const unsigned long long int& u_l_l_integer);
-	AnyType& operator=(const char& character);
-	AnyType& operator=(const unsigned char& u_character);
-	AnyType& operator=(const float& f);
-	AnyType& operator=(const double& lf);
-	AnyType& operator=(const long double& llf);
+	
+	void swap(AnyType& anyType);
 
 	bool ToBool();
-	int ToInt();
-	unsigned int ToUInt();
-	long ToLong();
-	unsigned long TpULong();
-	long long ToLongLong();
-	unsigned long long ToULongLong();
+	int ToInt();	
 	char ToChar();
-	unsigned char ToUChar();
-	float ToFloat();
 	double ToDouble();
-	long double ToLongDouble();
 
 	const char* GetType();
 
 private:
 	Element element;	
 };
+
+
+template<typename T>
+inline AnyType::AnyType(T input)
+{
+	if (strcmp(typeid(input).name(), "bool") == 0)
+	{
+		element.value.boolean = input;
+		element.type = const_cast<type_info*>(&typeid(input));		
+	}
+	else if (strcmp(typeid(input).name(), "char") == 0)
+	{
+		element.value.character = input;
+		element.type = const_cast<type_info*>(&typeid(input));	
+	}
+	else if (strcmp(typeid(input).name(), "int") == 0)
+	{
+		element.value.integer = input;
+		element.type = const_cast<type_info*>(&typeid(input));		
+	}
+	else if (strcmp(typeid(input).name(), "double") == 0)
+	{
+		element.value.llf = input;
+		element.type = const_cast<type_info*>(&typeid(input));		
+	}
+}
+
+template<typename T>
+inline AnyType& AnyType::operator=(T input)
+{
+	if (strcmp(typeid(input).name(), "bool") == 0)
+	{
+		element.value.boolean = input;
+		element.type = const_cast<type_info*>(&typeid(input));
+		return *this;
+	}
+	else if (strcmp(typeid(input).name(), "char") == 0)
+	{
+		element.value.character = input;
+		element.type = const_cast<type_info*>(&typeid(input));
+		return *this;
+	}
+	else if (strcmp(typeid(input).name(), "int") == 0)
+	{
+		element.value.integer = input;
+		element.type = const_cast<type_info*>(&typeid(input));
+		return *this;
+	}
+	else if (strcmp(typeid(input).name(), "double") == 0)
+	{
+		element.value.llf = input;
+		element.type = const_cast<type_info*>(&typeid(input));
+		return *this;
+	}
+}
