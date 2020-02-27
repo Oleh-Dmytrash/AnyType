@@ -2,12 +2,12 @@
 
 AnyType::AnyType()
 {
-	element.type = nullptr;
+	m_element.type = nullptr;
 }
 
 AnyType::~AnyType()
 {
-	element.type = nullptr;
+	m_element.type = nullptr;
 }
 
 AnyType& AnyType::operator=(const AnyType& anyType)
@@ -16,8 +16,8 @@ AnyType& AnyType::operator=(const AnyType& anyType)
 	{
 		return *this;
 	}
-	element.value = anyType.element.value;
-	element.type = anyType.element.type;
+	m_element.value = anyType.m_element.value;
+	m_element.type = anyType.m_element.type;
 	return *this;
 }
 
@@ -27,47 +27,80 @@ void AnyType::swap(AnyType& anyType)
 	{
 		return;
 	}
-	element.value = anyType.element.value;
-	element.type = anyType.element.type;
+	m_element.value = anyType.m_element.value;
+	m_element.type = anyType.m_element.type;
 }
 
 bool AnyType::ToBool()
 {
-	if (strcmp(element.type->name(), "bool") != 0)
+	if (!TypeSafeConvert("bool"))
 	{
 		throw std::exception("Can't convert to bool");
 	}	
-	return element.value.boolean;
+	return m_element.value.boolean;
 }
 
 int AnyType::ToInt()
 {
-	if (strcmp(element.type->name(), "int") != 0)
+	if (!TypeSafeConvert("int"))
 	{
 		throw std::exception("Can't convert to int");
 	}
-	return element.value.integer;
+
+	if (GetType() == "bool") return m_element.value.boolean;
+	if(GetType() == "char") return m_element.value.character;
+	return m_element.value.integer;
 }
 
 char AnyType::ToChar()
 {
-	if (strcmp(element.type->name(), "char") != 0)
+	if (!TypeSafeConvert("char"))
 	{
 		throw std::exception("Can't convert to char");
 	}
-	return element.value.character;
+
+	if (GetType() == "bool") return m_element.value.boolean;
+	return m_element.value.character;
 }
 
 double AnyType::ToDouble()
 {
-	if (strcmp(element.type->name(), "double") != 0)
+	if (!TypeSafeConvert("double"))
 	{
 		throw std::exception("Can't convert to double");
 	}
-	return element.value.llf;
+
+	if (GetType() == "bool") return m_element.value.boolean;
+	if (GetType() == "char") return m_element.value.character;
+	if (GetType() == "int") return m_element.value.integer;	
+	return m_element.value.llf;
 }
 
-const char* AnyType::GetType()
+std::string AnyType::GetType()
 {
-	return element.type->name();
+	return m_element.type->name();
+}
+
+bool AnyType::TypeSafeConvert(std::string type_for_converting)
+{
+	if (type_for_converting == "double") return true;
+	
+	std::string current_type_name(this->GetType());
+
+	if (current_type_name == type_for_converting) return true;
+
+	if (current_type_name == "bool") return true;
+
+	if (current_type_name != "double" && type_for_converting == "double") return false;
+	
+	if (current_type_name == "bool" && type_for_converting != "bool") return false;
+
+	if (current_type_name == "int" && type_for_converting == "double")
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }

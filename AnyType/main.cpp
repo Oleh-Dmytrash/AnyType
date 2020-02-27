@@ -18,17 +18,29 @@ int main()
     }
 
     anyType = 5;
-    cout << anyType.GetType() << "\t :" << anyType.ToInt() << endl;
+    cout << anyType.GetType() << "\t :" << anyType.ToDouble() << endl;
 
     anyType = true;
-    cout << anyType.GetType() << "\t :" << anyType.ToBool() << endl;
+    cout << anyType.GetType() << "\t :" << anyType.ToChar() << endl;
 
     anyType = 'h';
-    cout << anyType.GetType() << "\t :" << anyType.ToChar() << endl;
+    cout << anyType.GetType() << "\t :" << anyType.ToDouble() << endl;
 
     try
     {
-        cout << anyType.GetType() << "  :" << anyType.ToInt() << endl;
+        cout << anyType.GetType() << "\t  :" << anyType.ToInt() << endl;
+    }
+    catch (const std::exception& ex)
+    {
+        cout << ex.what() << '\n';
+    }
+
+    AnyType b;
+    swap(anyType, b);
+
+    try
+    {
+        cout << b.GetType() << "\t :" << b.ToChar();
     }
     catch (const std::exception& ex)
     {

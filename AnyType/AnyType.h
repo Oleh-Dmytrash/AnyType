@@ -2,6 +2,7 @@
 
 #include <typeinfo>
 #include <string.h>
+#include <string>
 #include "Element.h"
 #include "TypeUnion.h"
 
@@ -20,17 +21,20 @@ public:
 
 	AnyType& operator=(const AnyType& anyType);
 	
-	void swap(AnyType& anyType);
+	void swap(AnyType& anyType);//swap two element
 
+	//converting functions
 	bool ToBool();
 	int ToInt();	
 	char ToChar();
 	double ToDouble();
 
-	const char* GetType();
+	//getting element type
+	std::string GetType();
 
 private:
-	Element element;	
+	Element m_element;//struct with element type and element value
+	bool TypeSafeConvert(std::string type_for_converting);//checking if convert is type-save
 };
 
 
@@ -39,23 +43,23 @@ inline AnyType::AnyType(T input)
 {
 	if (strcmp(typeid(input).name(), "bool") == 0)
 	{
-		element.value.boolean = input;
-		element.type = const_cast<type_info*>(&typeid(input));		
+		m_element.value.boolean = input;
+		m_element.type = const_cast<type_info*>(&typeid(input));		
 	}
 	else if (strcmp(typeid(input).name(), "char") == 0)
 	{
-		element.value.character = input;
-		element.type = const_cast<type_info*>(&typeid(input));	
+		m_element.value.character = input;
+		m_element.type = const_cast<type_info*>(&typeid(input));	
 	}
 	else if (strcmp(typeid(input).name(), "int") == 0)
 	{
-		element.value.integer = input;
-		element.type = const_cast<type_info*>(&typeid(input));		
+		m_element.value.integer = input;
+		m_element.type = const_cast<type_info*>(&typeid(input));		
 	}
 	else if (strcmp(typeid(input).name(), "double") == 0)
 	{
-		element.value.llf = input;
-		element.type = const_cast<type_info*>(&typeid(input));		
+		m_element.value.llf = input;
+		m_element.type = const_cast<type_info*>(&typeid(input));		
 	}
 }
 
@@ -64,26 +68,26 @@ inline AnyType& AnyType::operator=(T input)
 {
 	if (strcmp(typeid(input).name(), "bool") == 0)
 	{
-		element.value.boolean = input;
-		element.type = const_cast<type_info*>(&typeid(input));
+		m_element.value.boolean = input;
+		m_element.type = const_cast<type_info*>(&typeid(input));
 		return *this;
 	}
 	else if (strcmp(typeid(input).name(), "char") == 0)
 	{
-		element.value.character = input;
-		element.type = const_cast<type_info*>(&typeid(input));
+		m_element.value.character = input;
+		m_element.type = const_cast<type_info*>(&typeid(input));
 		return *this;
 	}
 	else if (strcmp(typeid(input).name(), "int") == 0)
 	{
-		element.value.integer = input;
-		element.type = const_cast<type_info*>(&typeid(input));
+		m_element.value.integer = input;
+		m_element.type = const_cast<type_info*>(&typeid(input));
 		return *this;
 	}
 	else if (strcmp(typeid(input).name(), "double") == 0)
 	{
-		element.value.llf = input;
-		element.type = const_cast<type_info*>(&typeid(input));
+		m_element.value.llf = input;
+		m_element.type = const_cast<type_info*>(&typeid(input));
 		return *this;
 	}
 }
