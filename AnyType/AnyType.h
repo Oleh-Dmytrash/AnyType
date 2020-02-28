@@ -11,10 +11,10 @@ using namespace std;
 class AnyType
 {
 public:
-	AnyType();	
+	AnyType() { m_element.type = nullptr; };
 	template<typename T>
 	AnyType(T input);
-	~AnyType();	
+	~AnyType() { };
 	
 	template<typename T>
 	AnyType& operator=(T input);
@@ -61,6 +61,10 @@ inline AnyType::AnyType(T input)
 		m_element.value.llf = input;
 		m_element.type = const_cast<type_info*>(&typeid(input));		
 	}
+	else
+	{
+		throw std::exception("Input value is not a simple value");
+	}
 }
 
 template<typename T>
@@ -89,5 +93,9 @@ inline AnyType& AnyType::operator=(T input)
 		m_element.value.llf = input;
 		m_element.type = const_cast<type_info*>(&typeid(input));
 		return *this;
+	}
+	else
+	{
+		throw std::exception("Input value is not a simple value");
 	}
 }

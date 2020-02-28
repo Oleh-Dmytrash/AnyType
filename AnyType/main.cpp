@@ -7,7 +7,9 @@
 int main()
 {
     AnyType anyType = 0.56;
-
+    AnyType anyType1(anyType);
+    cout << anyType1.GetType() << "\n\n";
+    
     try
     {
         cout << anyType.GetType() << "\t :" << anyType.ToDouble() << endl;
@@ -36,7 +38,7 @@ int main()
     }
 
     AnyType b;
-    swap(anyType, b);
+    b.swap(anyType);
 
     try
     {

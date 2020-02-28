@@ -1,15 +1,5 @@
 #include "AnyType.h"
 
-AnyType::AnyType()
-{
-	m_element.type = nullptr;
-}
-
-AnyType::~AnyType()
-{
-	m_element.type = nullptr;
-}
-
 AnyType& AnyType::operator=(const AnyType& anyType)
 {
 	if (this == &anyType)
@@ -27,8 +17,9 @@ void AnyType::swap(AnyType& anyType)
 	{
 		return;
 	}
-	m_element.value = anyType.m_element.value;
-	m_element.type = anyType.m_element.type;
+	AnyType anyType_tmp = *this;
+	*this = anyType;
+	anyType = anyType_tmp;
 }
 
 bool AnyType::ToBool()
@@ -78,7 +69,8 @@ double AnyType::ToDouble()
 
 std::string AnyType::GetType()
 {
-	return m_element.type->name();
+	std::string type(m_element.type->name());
+	return type;
 }
 
 bool AnyType::TypeSafeConvert(std::string type_for_converting)
